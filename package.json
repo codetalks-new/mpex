@@ -5,7 +5,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "tsc",
     "build": "tsc",
     "prepublish": "tsc"
   },
@@ -22,6 +22,6 @@
   "homepage": "https://github.com/banxi1988/mpex#readme",
   "devDependencies": {
     "typescript": "^2.8.3",
-    "wechat-mp-types": "^1.1.201805282221"
+    "wechat-mp-types": "^1.2.1"
   }
 }

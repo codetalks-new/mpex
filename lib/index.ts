@@ -29,11 +29,11 @@ export function promisify<P extends wx.BaseOptions, R>(
       opts.success = res => {
         resolve(res);
       };
-      opts.fail = () => {
-        reject();
+      opts.fail = (reason?) => {
+        reject(reason);
       };
       fun(opts);
-    });
+    })
   }
   return newFun;
 }
@@ -140,10 +140,19 @@ export function makeNavigationUrl(url: string, params?: object) {
   }
 }
 
+declare var console:any;
+
 type OldNavigationFunction = typeof wx.navigateTo;
 function enhanceNavigation(fun: OldNavigationFunction) {
+  const pfun = promisify(fun)
   return function navigate(url: string, params?: object) {
-    fun({ url: makeNavigationUrl(url, params) });
+    pfun({ url: makeNavigationUrl(url, params) })
+    .then(function(res){
+      console.info("NAV DONE "+url)
+    }).catch(function(reason){
+      console.info("NAV FAIL "+url+", reason:"+reason)
+    })
+    ;
   };
 }
 

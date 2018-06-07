@@ -29,7 +29,10 @@ export function promisify<P extends wx.BaseOptions, R>(
       opts.success = res => {
         resolve(res);
       };
-      opts.fail = (reason?) => {
+      opts.fail = (reason) => {
+        if(reason){
+          console.error(reason)
+        }
         reject(reason);
       };
       fun(opts);

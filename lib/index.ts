@@ -150,7 +150,7 @@ function enhanceNavigation(fun: OldNavigationFunction) {
     .then(function(res){
       console.info("NAV DONE "+url)
     }).catch(function(reason){
-      console.info("NAV FAIL "+url+", reason:"+reason)
+      console.info("NAV FAIL "+url+", reason:",reason)
     })
     ;
   };

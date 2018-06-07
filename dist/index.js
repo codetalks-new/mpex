@@ -26,8 +26,8 @@ export function promisify(fun) {
             opts.success = res => {
                 resolve(res);
             };
-            opts.fail = () => {
-                reject();
+            opts.fail = (reason) => {
+                reject(reason);
             };
             fun(opts);
         });
@@ -102,8 +102,14 @@ export function makeNavigationUrl(url, params) {
     }
 }
 function enhanceNavigation(fun) {
+    const pfun = promisify(fun);
     return function navigate(url, params) {
-        fun({ url: makeNavigationUrl(url, params) });
+        pfun({ url: makeNavigationUrl(url, params) })
+            .then(function (res) {
+            console.info("NAV DONE " + url);
+        }).catch(function (reason) {
+            console.info("NAV FAIL " + url + ", reason:", reason);
+        });
     };
 }
 export const navigateTo = enhanceNavigation(wx.navigateTo);

@@ -26,10 +26,10 @@ export function promisify<P extends wx.BaseOptions, R>(
   function newFun(options?: P): Promise<R> {
     const opts: P = options || ({} as P);
     return new Promise(function(resolve, reject) {
-      opts.success = res => {
+      opts.success = (res: any) => {
         resolve(res);
       };
-      opts.fail = reason => {
+      opts.fail = (reason: any) => {
         if (reason) {
           console.error(reason);
         }

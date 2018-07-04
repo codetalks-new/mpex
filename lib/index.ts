@@ -73,6 +73,43 @@ export const setTabBarItem = promisify<wx.TabBarItem, wx.BaseResponse>(
 );
 
 /**
+ *
+ * @param key 本地缓存中的指定的 key
+ * @param data 需要存储的内容
+ */
+export function setStorage(key: string, data: string | object) {
+  const newFun = promisify<wx.SetStorageOptions, wx.BaseResponse>(
+    wx.setStorage
+  );
+  return newFun({
+    key,
+    data
+  });
+}
+
+/**
+ * 从本地缓存中异步获取指定 key 对应的内容。
+ * @param key 本地缓存中的指定的 key
+ */
+export function getStorageByKey(key: string) {
+  const newFunc = promisify<wx.GetStorageOptions, wx.BaseResponse>(
+    wx.getStorage
+  );
+  return newFunc({ key });
+}
+
+/**
+ * 从本地缓存中异步移除指定 key 。
+ * @param key 本地缓存中的指定的 key
+ */
+export function removeStorageByKey(key: string) {
+  const newFunc = promisify<wx.RemoveStorageOptions, wx.BaseResponse>(
+    wx.removeStorage
+  );
+  return newFunc({ key });
+}
+
+/**
  * 创建一个 WebSocket 连接。使用前请先阅读说明。
 
 基础库 1.7.0 之前，一个微信小程序同时只能有一个 WebSocket 连接，如果当前已存在一个
@@ -136,7 +173,7 @@ export const modalOptions = {
   confirmColor: "#3CC51F" //确定按钮的文字颜色,
 };
 
-export function confirm(content: string, title: string = "提示") {
+export function showConfirm(content: string, title: string = "提示") {
   const options: wx.ModalOptions = Object.assign({}, modalOptions);
   options.title = title;
   options.content = content;
@@ -144,13 +181,17 @@ export function confirm(content: string, title: string = "提示") {
   return showModal(options);
 }
 
-export function prompt(content: string, title: string = "提示") {
+export const confirm = showConfirm;
+
+export function showPrompt(content: string, title: string = "提示") {
   const options: wx.ModalOptions = Object.assign({}, modalOptions);
   options.title = title;
   options.content = content;
   options.showCancel = true;
   return showModal(options);
 }
+
+export const prompt = showPrompt;
 
 export function showLoading(title: string = "加载中…") {
   wx.showLoading({

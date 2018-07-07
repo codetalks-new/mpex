@@ -245,9 +245,10 @@ export function makeNavigationUrl(url: string, params?: object) {
 declare var console: any;
 
 type OldNavigationFunction = typeof wx.navigateTo;
+type Params = { [key: string]: any };
 function enhanceNavigation(fun: OldNavigationFunction) {
   const pfun = promisify(fun);
-  return function navigate(url: string, params?: object) {
+  return function navigate(url: string, params?: Params) {
     pfun({ url: makeNavigationUrl(url, params) })
       .then(function(res) {
         console.info("NAV DONE " + url);
@@ -258,12 +259,55 @@ function enhanceNavigation(fun: OldNavigationFunction) {
   };
 }
 
+/**
+ * 保留当前页面，跳转到应用内的某个页面，使用wx.navigateBack可以返回到原页面。
+ *
+ * 注意：为了不让用户在使用小程序时造成困扰，
+ *
+ * **目前页面路径最多只能10层**，请尽量避免多层级的交互方式。
+ *
+ * Tip:
+ * `wx.navigateTo` 和 `wx.redirectTo` 不允许跳转到 tabbar 页面，只能用 `wx.switchTab` 跳转到 tabbar 页面
+ */
 export const navigateTo = enhanceNavigation(wx.navigateTo);
+
+/**
+ * 关闭当前页面，跳转到应用内的某个页面。
+ * Tip:
+ * `wx.navigateTo` 和 `wx.redirectTo` 不允许跳转到 tabbar 页面，只能用 `wx.switchTab` 跳转到 tabbar 页面
+ */
 export const redirectTo = enhanceNavigation(wx.redirectTo);
+
+/**
+ * 跳转到 tabBar 页面，并关闭其他所有非 tabBar 页面
+ * 需要跳转的 tabBar 页面的路径（需在 app.json 的 tabBar 字段定义的页面），路径后不能带参数
+ */
 export const switchTab = enhanceNavigation(wx.switchTab);
-export const navigateBack = enhanceNavigation(wx.navigateBack);
+
+/**
+ * 关闭所有页面，打开到应用内的某个页面。
+ */
 export const reLaunch = enhanceNavigation(wx.reLaunch);
 
+/**
+ *
+ * 关闭当前页面，返回上一页面或多级页面。可通过 `getCurrentPages()` 获取当前的页面栈，决定需要返回几层。
+ *
+ * @param delta  返回的页面数，如果 delta 大于现有页面数，则返回到首页。
+ * @default 1
+ */
+export function navigateBack(delta: number = 1) {
+  const newFun = promisify(wx.navigateBack);
+  const options: wx.NavigateBackOptions = {
+    delta
+  };
+  return newFun(options);
+}
+
+/**
+ * 动态设置当前页面的标题。
+ * @param title 页面标题
+ */
 export function setNavigationBarTitle(title: string) {
   wx.setNavigationBarTitle({ title });
 }

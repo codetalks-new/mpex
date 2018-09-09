@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-typescript@^2.9.2:
-  version "2.9.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.9.2.tgz#1cbf61d05d6b96269244eb6a3bce4bd914e0f00c"
+typescript@^3.0.3:
+  version "3.0.3"
+  resolved "http://registry.npm.taobao.org/typescript/download/typescript-3.0.3.tgz#4853b3e275ecdaa27f78fda46dc273a7eb7fc1c8"
 
-wechat-mp-types@^1.3.0:
-  version "1.3.9"
-  resolved "https://registry.yarnpkg.com/wechat-mp-types/-/wechat-mp-types-1.3.9.tgz#6e58ff14265eec87e9f666ccf517e28433a97fce"
+wechat-mp-types@^1.4.0:
+  version "1.4.2"
+  resolved "http://registry.npm.taobao.org/wechat-mp-types/download/wechat-mp-types-1.4.2.tgz#6c547ebc439d10fb950898f262350e5ed7e90e03"

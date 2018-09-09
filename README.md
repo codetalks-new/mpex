@@ -1,21 +1,50 @@
 # mpex
 
-基于 TypeScript 的一个微信小程序开发支持库。
+微信小程序 API 的 Promise 版本,及实用方法集合
 
 ## 安装
 
 使用 npm `npm install -S mpex`
-使用 yarn `yarn install -S mpex`
+使用 yarn `yarn add mpex`
 
 ## 使用说明
+
+mpex 对绝大部分的小程序 API 进行了 Promise 化的封装。
 
 首先导入 `mpex` 库。
 
 ```js
 import * as mpex from "mpex";
+// 或者直接使用
+import { <WxApi> } from "mpex"
 ```
 
-下面是一些封装的常见功能。
+以实现一个下载附件，保存附件，及询问用户是否打开附件的功能为例演示使用代码。
+
+```ts
+  async downloadAttachment(url: string) {
+    mpex.showLoading("正在下载附件…");
+    const ret1 = await mpex.downloadFile({ url: attachment.uri });
+    const ret2 = await mpex.saveFile({ tempFilePath: ret1.tempFilePath });
+    mpex.hideLoading();
+    const msg = `附件已经下载完成。 点击确定马上打开。`;
+    const res = await mpex.prompt(msg);
+    if (res.confirm) {
+      wx.openDocument({ filePath: ret2.savedFilePath });
+    }
+  }
+```
+
+除了 `wx` 命名空间下的 API。 本库
+还提供了对 `CameraContext` 和 `MapContext` 对象下的接口的 Promise 化封装。
+
+```ts
+export function promisifyMapContext(ctx: wx.MapContext);
+
+export function promisifyCameraContext(ctx: wx.CameraContext);
+```
+
+下面是其他一些封装的常见功能。
 
 1.  使用封装的导航 API， 以 `navigateTo` 为例。 可免去手动拼接 query 的麻烦。
 
@@ -23,38 +52,20 @@ import * as mpex from "mpex";
 mpex.navigateTo("/pages/news/main", { newsId: 1988, cate: 2 });
 ```
 
-2.  Promise 化 小程序 API 调用。 以 `showModal` 为例。官方示例如下：
-
-```js
-wx.showModal({
-  title: "提示",
-  content: "这是一个模态弹窗",
-  success: function(res) {
-    if (res.confirm) {
-      console.log("用户点击确定");
-    } else if (res.cancel) {
-      console.log("用户点击取消");
-    }
-  }
-});
-```
-
-使用 `mpex` 封装的方法，因为我们封装的函数返回的是一个 Promise 所以，上面的代码可改写如下：
-
-```js
-const res = await mpex.showModal("”这是一个模态窗口");
-if (res.confirm) {
-    console.log('用户点击确定')
-} else if (res.cancel) {
-    console.log('用户点击取消')
-}
-```
-
-虽然 `mpex` 暂时只封装了我目前使用到的一些 API。但是也可以使用 `mpex` 提供的 `promisify` 方法轻松的封装其他的 API。比如 `wx.login` 接口。
-`mpex` 中便是向下面这样封装的。
+2. 提供 showActionSheet 的封装 `chooseActionMenu` 用于选择菜单的使用。TS 下有 TS 泛型加持。
 
 ```ts
-export const login = promisify<wx.LoginOptions, wx.LoginResponse>(wx.login);
+const menus = [
+  LeaveCategory.sick,
+  LeaveCategory.absence,
+  LeaveCategory.work
+].map(category => {
+  const title = formatLeaveCategory(category);
+  return { title, category };
+});
+mpex.chooseActionMenu(menus).then(menu => {
+  this.state.category = menu.category;
+});
 ```
 
 ## 其他

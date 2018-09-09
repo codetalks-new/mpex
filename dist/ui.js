@@ -151,7 +151,7 @@ function chooseActionMenu(actionMenus, itemColor = "#000000") {
     return __awaiter(this, void 0, void 0, function* () {
         const menus = actionMenus.map(it => it.title);
         try {
-            const resp = yield exports.showActionSheet({ itemList: menus });
+            const resp = yield exports.showActionSheet({ itemList: menus, itemColor });
             return actionMenus[resp.tapIndex];
         }
         catch (error) {

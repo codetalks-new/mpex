@@ -1,10 +1,8 @@
 import { promisify, encodeQuery } from "./utils";
 
-
 export const setTabBarItem = promisify<wx.TabBarItem, wx.BaseResponse>(
   wx.setTabBarItem
 );
-
 
 export const modalOptions = {
   title: "提示", //提示的标题,
@@ -181,7 +179,7 @@ export async function chooseActionMenu<T extends ActionMenu>(
 ): Promise<T> {
   const menus = actionMenus.map(it => it.title);
   try {
-    const resp = await showActionSheet({ itemList: menus });
+    const resp = await showActionSheet({ itemList: menus, itemColor });
     return actionMenus[resp.tapIndex];
   } catch (error) {
     return Promise.reject(error);

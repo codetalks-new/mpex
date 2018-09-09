@@ -28,6 +28,9 @@ export declare function showToast(title: string, icon?: "success" | "loading", i
 export declare function showSuccess(title: string): void;
 export declare function showToastLoading(title: string): void;
 export declare function makeNavigationUrl(url: string, params?: object): string;
+declare type Params = {
+    [key: string]: any;
+};
 /**
  * 保留当前页面，跳转到应用内的某个页面，使用wx.navigateBack可以返回到原页面。
  *
@@ -38,30 +41,22 @@ export declare function makeNavigationUrl(url: string, params?: object): string;
  * Tip:
  * `wx.navigateTo` 和 `wx.redirectTo` 不允许跳转到 tabbar 页面，只能用 `wx.switchTab` 跳转到 tabbar 页面
  */
-export declare const navigateTo: (url: string, params?: {
-    [key: string]: any;
-} | undefined) => void;
+export declare const navigateTo: (url: string, params?: Params | undefined) => void;
 /**
  * 关闭当前页面，跳转到应用内的某个页面。
  * Tip:
  * `wx.navigateTo` 和 `wx.redirectTo` 不允许跳转到 tabbar 页面，只能用 `wx.switchTab` 跳转到 tabbar 页面
  */
-export declare const redirectTo: (url: string, params?: {
-    [key: string]: any;
-} | undefined) => void;
+export declare const redirectTo: (url: string, params?: Params | undefined) => void;
 /**
  * 跳转到 tabBar 页面，并关闭其他所有非 tabBar 页面
  * 需要跳转的 tabBar 页面的路径（需在 app.json 的 tabBar 字段定义的页面），路径后不能带参数
  */
-export declare const switchTab: (url: string, params?: {
-    [key: string]: any;
-} | undefined) => void;
+export declare const switchTab: (url: string, params?: Params | undefined) => void;
 /**
  * 关闭所有页面，打开到应用内的某个页面。
  */
-export declare const reLaunch: (url: string, params?: {
-    [key: string]: any;
-} | undefined) => void;
+export declare const reLaunch: (url: string, params?: Params | undefined) => void;
 /**
  *
  * 关闭当前页面，返回上一页面或多级页面。可通过 `getCurrentPages()` 获取当前的页面栈，决定需要返回几层。
@@ -88,3 +83,4 @@ export interface ActionMenu {
  * @param itemColor 按钮的文字颜色，默认为"#000000"
  */
 export declare function chooseActionMenu<T extends ActionMenu>(actionMenus: T[], itemColor?: string): Promise<T>;
+export {};

@@ -1,6 +1,6 @@
 {
   "name": "mpex",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "微信小程序 API 的 Promise 版本,及实用方法集合",
   "main": "./dist/index.js",
   "types": "./dist/types/index.d.ts",

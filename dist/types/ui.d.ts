@@ -1,4 +1,4 @@
-export declare const setTabBarItem: (options: wx.TabBarItem) => Promise<wx.BaseResponse>;
+export declare const setTabBarItem: (options?: wx.TabBarItem | undefined) => Promise<wx.BaseResponse>;
 export declare const modalOptions: {
     title: string;
     content: string;
@@ -8,7 +8,7 @@ export declare const modalOptions: {
     confirmText: string;
     confirmColor: string;
 };
-export declare const showModal: (options: wx.ModalOptions) => Promise<wx.ModalResponse>;
+export declare const showModal: (options?: wx.ModalOptions | undefined) => Promise<wx.ModalResponse>;
 export declare function showConfirm(content: string, title?: string): Promise<wx.ModalResponse>;
 export declare const confirm: typeof showConfirm;
 export declare function showPrompt(content: string, title?: string): Promise<wx.ModalResponse>;
@@ -70,7 +70,7 @@ export declare function navigateBack(delta?: number): Promise<{}>;
  * @param title 页面标题
  */
 export declare function setNavigationBarTitle(title: string): void;
-export declare const showActionSheet: (options: wx.ActionSheetOptions) => Promise<wx.ActionSheetResponse>;
+export declare const showActionSheet: (options?: wx.ActionSheetOptions | undefined) => Promise<wx.ActionSheetResponse>;
 /**
  * ActionSheet 操作菜单项接口
  */

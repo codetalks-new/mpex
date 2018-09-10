@@ -21,10 +21,10 @@ export function encodeQuery(object: object): string {
  * @param fun 微信回调风格接口函数
  */
 export function promisify<P extends wx.BaseOptions, R>(
-  fun: (options: P) => any,
+  fun: (options?: P) => any,
   thisInstance?: object
 ) {
-  const newFun = function(options: P) {
+  const newFun = function(options?: P) {
     const opts = options || ({} as any);
     return new Promise<R>(function(resolve, reject) {
       opts.success = (res: any) => {

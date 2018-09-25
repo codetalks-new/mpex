@@ -1,12 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./utils");
 exports.setTabBarItem = utils_1.promisify(wx.setTabBarItem);
@@ -148,15 +140,16 @@ exports.showActionSheet = utils_1.promisify(wx.showActionSheet);
  * @param itemColor 按钮的文字颜色，默认为"#000000"
  */
 function chooseActionMenu(actionMenus, itemColor = "#000000") {
-    return __awaiter(this, void 0, void 0, function* () {
-        const menus = actionMenus.map(it => it.title);
-        try {
-            const resp = yield exports.showActionSheet({ itemList: menus, itemColor });
-            return actionMenus[resp.tapIndex];
-        }
-        catch (error) {
-            return Promise.reject(error);
-        }
+    const menus = actionMenus.map(it => it.title);
+    return new Promise((resolve, reject) => {
+        exports.showActionSheet({ itemList: menus, itemColor })
+            .then(res => {
+            const menu = actionMenus[res.tapIndex];
+            resolve(menu);
+        })
+            .catch(reason => {
+            reject(reason);
+        });
     });
 }
 exports.chooseActionMenu = chooseActionMenu;

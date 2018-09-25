@@ -46,3 +46,21 @@ export function promisify<P extends wx.BaseOptions, R>(
 
   return newFun;
 }
+
+/**
+ * Act like Promise.deferred
+ * creates an object consisting of { promise, resolve, reject }:
+ * promise is a promise that is currently in the pending state.
+ * resolve(value) resolves the promise with value.
+ * reject(reason) moves the promise from the pending state to the rejected state, with rejection reason reason.
+ */
+export function deferred<T>() {
+  let resolve: (value?: T | PromiseLike<T> | undefined) => void = value =>
+    value;
+  let reject: (reason?: any) => void = error => error;
+  const promise = new Promise<T>((resolveP, rejectP) => {
+    resolve = resolveP;
+    reject = rejectP;
+  });
+  return { promise, resolve, reject };
+}

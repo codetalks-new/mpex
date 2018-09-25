@@ -1,4 +1,4 @@
-import { promisify, encodeQuery } from "./utils";
+import { promisify, encodeQuery, deferred } from "./utils";
 
 export const setTabBarItem = promisify<wx.TabBarItem, wx.BaseResponse>(
   wx.setTabBarItem
@@ -173,15 +173,19 @@ export interface ActionMenu {
  * @param actionMenus 操作菜单数组
  * @param itemColor 按钮的文字颜色，默认为"#000000"
  */
-export async function chooseActionMenu<T extends ActionMenu>(
+export function chooseActionMenu<T extends ActionMenu>(
   actionMenus: T[],
   itemColor: string = "#000000"
 ): Promise<T> {
   const menus = actionMenus.map(it => it.title);
-  try {
-    const resp = await showActionSheet({ itemList: menus, itemColor });
-    return actionMenus[resp.tapIndex];
-  } catch (error) {
-    return Promise.reject(error);
-  }
+  return new Promise<T>((resolve, reject) => {
+    showActionSheet({ itemList: menus, itemColor })
+      .then(res => {
+        const menu = actionMenus[res.tapIndex];
+        resolve(menu);
+      })
+      .catch(reason => {
+        reject(reason);
+      });
+  });
 }

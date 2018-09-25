@@ -46,3 +46,20 @@ function promisify(fun, thisInstance) {
     return newFun;
 }
 exports.promisify = promisify;
+/**
+ * Act like Promise.deferred
+ * creates an object consisting of { promise, resolve, reject }:
+ * promise is a promise that is currently in the pending state.
+ * resolve(value) resolves the promise with value.
+ * reject(reason) moves the promise from the pending state to the rejected state, with rejection reason reason.
+ */
+function deferred() {
+    let resolve = value => value;
+    let reject = error => error;
+    const promise = new Promise((resolveP, rejectP) => {
+        resolve = resolveP;
+        reject = rejectP;
+    });
+    return { promise, resolve, reject };
+}
+exports.deferred = deferred;
